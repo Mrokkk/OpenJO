@@ -4983,76 +4983,6 @@ void Item_ValidateTypeData(itemDef_t *item)
 	}
 }
 
-qboolean ItemParse_isCharacter( itemDef_t *item )
-{
-	int i;
-	if ( !PC_ParseInt(&i) )
-	{
-		if ( i )
-		{
-			item->flags |= ITF_ISCHARACTER;
-		}
-		else
-		{
-			item->flags &= ~ITF_ISCHARACTER;
-		}
-		return qtrue;
-	}
-	return qfalse;
-}
-
-qboolean ItemParse_isSaber( itemDef_t *item )
-{
-extern void UI_SaberLoadParms( void );
-extern qboolean ui_saber_parms_parsed;
-extern void UI_CacheSaberGlowGraphics( void );
-	int	i;
-	if ( !PC_ParseInt(&i) )
-	{
-		if ( i )
-		{
-			item->flags |= ITF_ISSABER;
-			UI_CacheSaberGlowGraphics();
-			if ( !ui_saber_parms_parsed )
-			{
-				UI_SaberLoadParms();
-			}
-		}
-		else
-		{
-			item->flags &= ~ITF_ISSABER;
-		}
-		return qtrue;
-	}
-	return qfalse;
-}
-
-qboolean ItemParse_isSaber2( itemDef_t *item )
-{
-extern void UI_SaberLoadParms( void );
-extern qboolean ui_saber_parms_parsed;
-extern void UI_CacheSaberGlowGraphics( void );
-	int	i;
-	if ( !PC_ParseInt(&i) )
-	{
-		if ( i )
-		{
-			item->flags |= ITF_ISSABER2;
-			UI_CacheSaberGlowGraphics();
-			if ( !ui_saber_parms_parsed )
-			{
-				UI_SaberLoadParms();
-			}
-		}
-		else
-		{
-			item->flags &= ~ITF_ISSABER2;
-		}
-		return qtrue;
-	}
-	return qfalse;
-}
-
 static qboolean ItemParse_glow( itemDef_t *item )
 {
 	const char *temp;
@@ -5107,9 +5037,6 @@ keywordHash_t itemParseKeywords[] = {
 	{"appearance_slot",	ItemParse_Appearance_slot,	},
 	{"asset_model",		ItemParse_asset_model,		},
 	{"asset_shader",	ItemParse_asset_shader,		},
-	{"isCharacter",		ItemParse_isCharacter,		},
-	{"isSaber",			ItemParse_isSaber,			},
-	{"isSaber2",		ItemParse_isSaber2,			},
 	{"autowrapped",		ItemParse_autowrapped,		},
 	{"backcolor",		ItemParse_backcolor,		},
 	{"background",		ItemParse_background,		},

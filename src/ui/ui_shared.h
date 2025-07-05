@@ -356,11 +356,6 @@ typedef struct modelDef_s {
 } modelDef_t;
 
 #define ITF_G2VALID			0x0001					// indicates whether or not g2 instance is valid.
-#define ITF_ISCHARACTER		0x0002					// a character item, uses customRGBA
-#define ITF_ISSABER			0x0004					// first saber item, draws blade
-#define ITF_ISSABER2		0x0008					// second saber item, draws blade
-
-#define ITF_ISANYSABER		(ITF_ISSABER|ITF_ISSABER2)	//either saber
 
 typedef struct itemDef_s {
 	Window		window;						// common positional, border, style, layout info
@@ -380,7 +375,7 @@ typedef struct itemDef_s {
 	void		*parent;					// menu owner
 	qhandle_t	asset;						// handle to asset
 	CGhoul2Info_v ghoul2;					// ghoul2 instance if available instead of a model.
-	int			flags;						// flags like g2valid, character, saber, saber2, etc.
+	int			flags;						// flags like g2valid
 	const char	*mouseEnterText;			// mouse enter script
 	const char	*mouseExitText;				// mouse exit script
 	const char	*mouseEnter;				// mouse enter script

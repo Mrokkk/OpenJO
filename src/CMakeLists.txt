@@ -271,7 +271,6 @@ set(SP_ENGINE_FILES ${SP_ENGINE_FILES}
     ui/ui_layout.cpp
     ui/ui_define.cpp
     ui/ui_main.cpp
-    ui/ui_saber.cpp
     ui/ui_shared.cpp
     ui/ui_syscalls.cpp
     ui/gameinfo.h
