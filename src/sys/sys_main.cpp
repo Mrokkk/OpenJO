@@ -386,6 +386,8 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 {
 	char *fn;
 	void *libHandle;
+	char buffer[4096];
+	char *it = buffer;
 
 	if ( searchFlags & SEARCH_PATH_MOD )
 	{
@@ -398,9 +400,9 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			fn = FS_BuildOSPath( libDir, gamedir, filename );
 			libHandle = Sys_LoadLibrary( fn );
 			if ( libHandle )
-				return libHandle;
+				goto loaded;
 
-			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
+			it += Com_sprintf(it, sizeof(buffer) - (it - buffer), "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError());
 		}
 	}
 
@@ -415,9 +417,9 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			fn = FS_BuildOSPath( libDir, BASEGAME, filename );
 			libHandle = Sys_LoadLibrary( fn );
 			if ( libHandle )
-				return libHandle;
+				goto loaded;
 
-			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
+			it += Com_sprintf(it, sizeof(buffer) - (it - buffer), "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError());
 		}
 	}
 
@@ -432,9 +434,9 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			fn = FS_BuildOSPath( libDir, OPENJKGAME, filename );
 			libHandle = Sys_LoadLibrary( fn );
 			if ( libHandle )
-				return libHandle;
+				goto loaded;
 
-			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
+			it += Com_sprintf(it, sizeof(buffer) - (it - buffer), "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError());
 		}
 	}
 
@@ -449,13 +451,19 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			fn = va( "%s%c%s", libDir, PATH_SEP, filename );
 			libHandle = Sys_LoadLibrary( fn );
 			if ( libHandle )
-				return libHandle;
+				goto loaded;
 
-			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
+			it += Com_sprintf(it, sizeof(buffer) - (it - buffer), "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError());
 		}
 	}
 
+	Com_Printf("Failed to load library:\n%s", buffer);
+
 	return NULL;
+
+loaded:
+	Com_Printf("Loaded %s\n", fn);
+	return libHandle;
 }
 
 static void FreeUnpackDLLResult(UnpackDLLResult *result)
