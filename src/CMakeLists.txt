@@ -36,7 +36,7 @@ set(SHARED_COMMON_FILES
     ${SRC_DIR}/qcommon/safe/string.h
     ${SRC_DIR}/qcommon/safe/sscanf.h
     ${SRC_DIR}/qcommon/safe/limited_vector.h
-    ${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h
+    ${CMAKE_BINARY_DIR}/src/qcommon/q_version.h
 )
 
 #    Add Modular Renderer project
