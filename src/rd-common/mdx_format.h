@@ -142,7 +142,7 @@ mdxaCompBone_t
 #ifdef __cplusplus
 struct mdxaCompQuatBone_t
 #else
-typedef struct
+typedef struct mdxaCompQuatBone_s
 #endif
 {
 	unsigned char Comp[14];
@@ -160,7 +160,7 @@ mdxaCompQuatBone_t
 
 
 #ifndef MDXABONEDEF
-typedef struct {
+typedef struct mdxaBone_s {
 	float matrix[3][4];
 
 

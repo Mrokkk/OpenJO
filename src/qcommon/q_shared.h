@@ -508,7 +508,7 @@ Ghoul2 Insert End
 
 #define MAX_G2_COLLISIONS 16
 // a trace is returned when a box is swept through the world
-typedef struct {
+typedef struct trace_s {
 	qboolean	allsolid;	// if true, plane is not valid
 	qboolean	startsolid;	// if true, the initial point was in a solid area
 	float		fraction;	// time completed, 1.0 = didn't hit anything
@@ -766,7 +766,7 @@ typedef enum
 } waterHeightLevel_t;
 
 // !!!!!!! loadsave affecting struct !!!!!!!
-typedef struct
+typedef struct saberTrail_s
 {
 	// Actual trail stuff
 	int		inAction;	// controls whether should we even consider starting one
@@ -812,7 +812,7 @@ typedef struct
 #define MAX_SABER_TRAIL_SEGS 8
 
 // !!!!!!!!!!!!! loadsave affecting struct !!!!!!!!!!!!!!!
-typedef struct
+typedef struct bladeInfo_s
 {
 	qboolean	active;
 	saber_colors_t	color;
@@ -936,7 +936,7 @@ typedef enum
 #define SFL2_TRANSITION_DAMAGE2		(1<<17)//if set, the blade does damage in start, transition and return anims (like strong style does)
 
 // !!!!!!!!!!!! loadsave affecting struct !!!!!!!!!!!!!!!!!!!!!!!!!!
-typedef struct
+typedef struct saberInfo_s
 {
 	char		*name;						//entry in sabers.cfg, if any
 	char		*fullName;					//the "Proper Name" of the saber, shown in the UI
@@ -1967,7 +1967,7 @@ typedef enum {// !!!!!!!!!!! LOADSAVE-affecting struct !!!!!!!!!!
 	TR_GRAVITY
 } trType_t;
 
-typedef struct {// !!!!!!!!!!! LOADSAVE-affecting struct !!!!!!!!!!
+typedef struct trajectory_s {// !!!!!!!!!!! LOADSAVE-affecting struct !!!!!!!!!!
 	trType_t	trType;
 	int		trTime;
 	int		trDuration;			// if non 0, trTime + trDuration = stop time
