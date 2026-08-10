@@ -84,6 +84,14 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
         ${CMAKE_CURRENT_LIST_DIR})
 endif()
 
+find_program(CCACHE ccache)
+
+if(CCACHE)
+    message(STATUS "Using ccache: ${CCACHE}")
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE}")
+    set(CMAKE_CXX_FLAGS "-fdiagnostics-color=always")
+endif()
+
 #=============================================================================
 #
 # Architecture/OS defines
@@ -128,6 +136,7 @@ else()
 endif()
 
 message(STATUS "Architecture is ${ARCHITECTURE}")
+set(ARCHITECTURE "${ARCHITECTURE}" CACHE STRING "Architecture")
 
 if(WIN32 AND CMAKE_VERSION VERSION_LESS "3.4")
     message(WARNING "Building on Windows platform with CMake version less than 3.4 is deprecated. Manifest file will fail to be included.")
@@ -211,11 +220,19 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
     endif()
 
-    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+    message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -ggdb3")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2 -ggdb3 -Wno-class-memaccess")
+    set(CMAKE_C_FLAGS_DEBUG "-O2 -ggdb3")
+    set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+    set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -ggdb3 -DNDEBUG")
+    set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG")
+
+    set(CMAKE_CXX_FLAGS_DEBUG "-O2 -ggdb3")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -ggdb3 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
     set(WARNING_FLAGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-comment")
 
@@ -239,7 +256,7 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
     endif()
 
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} -Wno-invalid-offsetof -Wno-write-strings -fsigned-char")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} -Wno-invalid-offsetof -Wno-write-strings -fsigned-char -Wno-class-memaccess")
         if (X86)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mstackrealign -mfpmath=sse")
         endif()
@@ -252,10 +269,6 @@ endif()
 
 set(SHARED_DEFINES ${SHARED_DEFINES} "$<$<CONFIG:Debug>:_DEBUG>")
 set(SHARED_DEFINES ${SHARED_DEFINES} "$<$<NOT:$<CONFIG:Debug>>:FINAL_BUILD>")
-
-if(DECODE_STACKTRACE)
-    set(SHARED_DEFINES ${SHARED_DEFINES} "OPENJO_STACKTRACE")
-endif()
 
 if(NONFATAL_ASSERT)
     set(SHARED_DEFINES ${SHARED_DEFINES} "OPENJO_NONFATAL_ASSERT")
@@ -289,7 +302,7 @@ include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_HASH)
 message(STATUS "Git revision is ${GIT_HASH}")
 
-configure_file(src/qcommon/q_version.h.in src/qcommon/q_version.h @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/qcommon/q_version.h.in ${CMAKE_BINARY_DIR}/src/qcommon/q_version.h @ONLY)
 
 #=============================================================================
 #

@@ -1,6 +1,6 @@
 # OpenJO
 
-OpenJO is my attempt to have improved Jedi Outcast SP for Linux. I don't plan to support MacOSX and Windows, however original OpenJK support for those operating systems is left for now, so building should work. What would not work is creating PK3 with assets, which is done by `build.sh`.
+OpenJO is my attempt to improve Jedi Outcast SP for Linux. I don't plan to support MacOSX and Windows, however original OpenJK support for those operating systems is left for now, so building should work. What would not work is creating PK3 with assets, which is done by `build.sh`.
 
 ## Changes
 
@@ -76,6 +76,6 @@ OpenJO is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## Building
 
-`./build.sh <install dir with Jedi Outcast base>`
+`./build.sh --install-dir <install dir with Jedi Outcast base> --build-type Release` run
 
 This will build OpenJO in the `build` directory, install it to given dir and run it

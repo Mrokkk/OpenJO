@@ -692,7 +692,9 @@ static int BacktraceCallback(void *data, uintptr_t pc, const char *pathname, int
 
 #endif
 
+#ifdef OPENJO_STACKTRACE
 static backtrace_state *backtraceState;
+#endif
 
 void Sys_StacktraceInit(void)
 {
