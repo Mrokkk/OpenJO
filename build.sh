@@ -7,11 +7,11 @@ BASE_DIR="$(readlink -f "$(dirname "${0}")")"
 . "${BASE_DIR}/scripts/utils.sh"
 
 CMAKE=${CMAKE:-cmake}
-BUILD_DIR="$(readlink -f "${BASE_DIR}/build")"
-INSTALL_DIR=
-TOOLCHAIN=
-COMMAND=
-ARCH=
+BUILD_DIR="${BASE_DIR}/build"
+INSTALL_DIR=""
+TOOLCHAIN=""
+COMMAND=""
+ARCH=""
 
 function print_help()
 {

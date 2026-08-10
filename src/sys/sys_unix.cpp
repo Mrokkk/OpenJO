@@ -714,7 +714,15 @@ void Sys_StacktraceDump(void)
 
 void Sys_CrashHandle(int signum)
 {
-	Com_Printf(S_COLOR_RED "==== SIG%s received ====\n", sigabbrev_np(signum));
+	const char* signame;
+#ifdef __linux__
+	signame = sigabbrev_np(signum);
+#elif defined(__FreeBSD__) or defined(__NetBSD__) or defined(__OpenBSD__) or defined(MACOS_X)
+	signame = sys_signame[signum];
+#else
+	signame = "(unknown)";
+#endif
+	Com_Printf(S_COLOR_RED "==== SIG%s received ====\n", signame);
 	Sys_StacktraceDump();
 	signal(signum, SIG_DFL); // Restore default signal handling so that core dump can be collected
 
