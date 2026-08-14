@@ -76,6 +76,6 @@ OpenJO is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## Building
 
-`./build.sh --install-dir <install dir with Jedi Outcast base> --build-type Release` run
+`./build.sh --install-dir <install dir with Jedi Outcast base> --build-type Release run`
 
 This will build OpenJO in the `build` directory, install it to given dir and run it

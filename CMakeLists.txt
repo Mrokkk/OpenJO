@@ -23,7 +23,6 @@ project(OpenJO)
 set(IN_OPENJO ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 #=============================================================================
@@ -76,21 +75,8 @@ option(USE_INTERNAL_SDL2   "If set, use bundled SDL2."    ${USE_INTERNAL_SDL2_DE
 #=============================================================================
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
-if(CMAKE_EXPORT_COMPILE_COMMANDS)
-    add_custom_target(
-        copy-compile-commands ALL
-        ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_BINARY_DIR}/compile_commands.json
-        ${CMAKE_CURRENT_LIST_DIR})
-endif()
-
-find_program(CCACHE ccache)
-
-if(CCACHE)
-    message(STATUS "Using ccache: ${CCACHE}")
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE}")
-    set(CMAKE_CXX_FLAGS "-fdiagnostics-color=always")
-endif()
+include(ccache)
+include(CompileCommands)
 
 #=============================================================================
 #
